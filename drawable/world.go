@@ -9,8 +9,8 @@ type World struct {
 	rooms []Room
 }
 
-func (r *World) Draw(screen  tcell.Screen) {
-	for _,room := range r.rooms {
+func (r *World) Draw(screen tcell.Screen) {
+	for _, room := range r.rooms {
 		room.Draw(screen)
 	}
 }

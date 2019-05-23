@@ -5,12 +5,14 @@ import (
 )
 
 type Type uint
+
 const (
 	Floor Type = iota
 	Hall
 	Wall
 	Door
 )
+
 func (t Type) String() string {
 	return [...]string{
 		"floor",
@@ -19,13 +21,16 @@ func (t Type) String() string {
 		"hall",
 	}[t]
 }
+
 type Cardinality uint
+
 const (
 	North Cardinality = iota
 	East
 	South
 	West
 )
+
 func (c Cardinality) String() string {
 	return [...]string{
 		"north",
@@ -56,14 +61,14 @@ func NewCell(x int, y int, t Type) Cell {
 		rune = tcell.RunePlus
 	}
 	return Cell{
-		X: x,
-		Y: y,
+		X:     x,
+		Y:     y,
 		Style: style,
-		Rune: rune,
+		Rune:  rune,
 	}
 }
 
 func (c *Cell) Draw(screen tcell.Screen) {
-	screen.SetContent(c.X,c.Y,c.Rune,nil,c.Style)
-	screen.Show()  // XXX Super-laggy: Remove later
+	screen.SetContent(c.X, c.Y, c.Rune, nil, c.Style)
+	screen.Show() // XXX Super-laggy: Remove later
 }

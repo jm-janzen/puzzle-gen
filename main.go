@@ -1,9 +1,9 @@
 package main
 
 /* TODO
-[ ] 1. Draw simple grid
-[ ] 2. Implement cell (floor, wall, door)
-[ ] 3. Implement room (made of up cells)
+[x] 1. Draw simple grid
+[x] 2. Implement cell (floor, wall, door)
+[x] 3. Implement room (made of up cells)
 [ ] 4. Implement world (made of up rooms)
 		World has meta-info: Path through rooms
 [ ] 5. Implement: Key, Lock, Start, End
