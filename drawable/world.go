@@ -15,13 +15,28 @@ func (r *World) Draw(screen tcell.Screen) {
 	}
 }
 
-func NewWorld(dim Dimensions) World {
+/*
+ * TODO Reimplement as branching, rather than grid
+ *      , or maybe just rethink entirely ...
+ */
+func NewWorld(noRooms int, roomSize int) World {
 	var w World
-	w = World{
-		Dimensions: dim,
+	for noRow := 0; noRow < noRooms/2; noRow++ {
+		for noColumn := 0; noColumn < 2; noColumn++ {
+			room := NewRoom(
+				Dimensions{
+					X1: (roomSize * noRow),
+					Y1: (roomSize * noColumn),
+					X2: roomSize + (roomSize * noRow),
+					Y2: roomSize + (roomSize * noColumn),
+				},
+			)
+			w.rooms = append(w.rooms, room)
+		}
 	}
-	// FIXME Gonna need a room size. Probably should just
-	//fix it to symmetrical boxes
-
 	return w
+}
+
+func (w *World) AddRoom(r *Room, c Cardinality) {
+	// TODO Attach to given room
 }

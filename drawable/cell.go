@@ -70,5 +70,4 @@ func NewCell(x int, y int, t Type) Cell {
 
 func (c *Cell) Draw(screen tcell.Screen) {
 	screen.SetContent(c.X, c.Y, c.Rune, nil, c.Style)
-	screen.Show() // XXX Super-laggy: Remove later
 }
