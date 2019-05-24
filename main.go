@@ -6,7 +6,9 @@ import (
 
 	"./drawable"
 	"./logger"
+	"./logical"
 	"./screen"
+	"github.com/gdamore/tcell"
 )
 
 const (
@@ -18,22 +20,38 @@ func main() {
 
 	logger.InitLogger("logs/debug.log", false)
 
-	world := drawable.NewWorld(noRooms, roomSize)
-	for _, r := range world.GetRooms() {
-		log.Printf("%#v\n", r.Dimensions)
+	player := logical.Player{
+		Pos: logical.Point{20, 20},
 	}
 
-	// TODO Centre around inner point
-	slice := world.GetRect(
-		drawable.Dimensions{10, 10, 20, 40},
-	)
-
-	view := drawable.NewView(slice)
+	world := drawable.NewWorld(noRooms, roomSize)
 
 	s := screen.InitScreen()
-	view.Draw(s)
 
-	s.Show()
+	for {
+		log.Printf("%#v\n", player)
+
+		// FIXME Update by reference ?
+		view := *drawable.NewView(player.Pos, world)
+		view.Draw(s)
+
+		ev := s.PollEvent()
+		switch ev := ev.(type) {
+		case *tcell.EventKey:
+			switch ev.Key() {
+			case tcell.KeyEscape, tcell.KeyEnter:
+				return
+			case tcell.KeyDown:
+				player.Pos.Y += 1
+			case tcell.KeyUp:
+				player.Pos.Y -= 1
+			case tcell.KeyRight:
+				player.Pos.X += 1
+			case tcell.KeyLeft:
+				player.Pos.X -= 1
+			}
+		}
+	}
 
 	os.Exit(0)
 }
