@@ -1,0 +1,36 @@
+## [WIP] puzzle-gen
+
+### Bare-bones, terminal-based puzzle-generator
+
+Hoping to learn a bit more about `golang`, and maybe get some reusable
+components that might be of use to other roguelike projects.
+
+### TODOs
+
+- [x] Draw simple grid
+- [x] Implement cell (floor, wall, door)
+- [x] Implement room (made of up cells)
+- [x] Implement world (made of up rooms)
+- [ ] Implement: Key, Lock, Start, End
+- [ ] Implement: Procedurally generate
+- [ ] Separate: View and World:
+
+```
++-----------------------------+ ~~ World
+|(-N1,-N2)                    |    - Unbounded, relative
+|                             |    - Purely logical
+|   +---------------------+ ~ | ~~ View
+|   |(0,0)                |   |    - Bound to display size, absolute
+|   |                     |   |    - Visualsation of logical layer
+|   |                     |   |
+|   |                     |   |
+|   |          @ ~~~~~~~~ | ~ | ~~ Player
+|   |                     |   |    - Kinda self-centred, but with cause
+|   |                     |   |
+|   |                     |   |
+|   |        (MAX_X,MAX_Y)|   |
+|   +---------------------+   |
+|                             |
+|                      (N1,N2)|
++-----------------------------+
+```
