@@ -71,3 +71,11 @@ func NewCell(x int, y int, t Type) Cell {
 func (c *Cell) Draw(screen tcell.Screen) {
 	screen.SetContent(c.X, c.Y, c.Rune, nil, c.Style)
 }
+
+func (c *Cell) In(dim Dimensions) bool {
+	if c.X >= dim.X1 && c.X < dim.X2 && c.Y >= dim.Y1 && c.Y < dim.Y2 {
+		return true
+	} else {
+		return false
+	}
+}

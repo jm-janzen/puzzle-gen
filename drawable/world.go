@@ -37,6 +37,22 @@ func NewWorld(noRooms int, roomSize int) World {
 	return w
 }
 
+func (w *World) GetRect(dim Dimensions) []Cell {
+	var slice []Cell
+	for _, r := range w.rooms {
+		for _, c := range r.cells {
+			if c.In(dim) {
+				slice = append(slice, c)
+			}
+		}
+	}
+	return slice
+}
+
+func (w *World) GetRooms() []Room {
+	return w.rooms
+}
+
 func (w *World) AddRoom(r *Room, c Cardinality) {
 	// TODO Attach to given room
 }
