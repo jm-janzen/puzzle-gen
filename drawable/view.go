@@ -1,32 +1,36 @@
 package drawable
 
 import (
-	"../logical"
 	"github.com/gdamore/tcell"
+	"github.com/jm-janzen/puzzle-gen/types"
 )
 
 type View struct {
-	Centre logical.Point
+	Centre types.Point
 	cells  []Cell
 }
 
-func NewView(centre logical.Point, world World) *View {
-	const viewArea = 10
+func NewView(centre types.Point, world *World) View {
+	const (
+		verticalView   = 48
+		horizontalView = 106
+	)
 	slice := world.GetRect(
 		Dimensions{
-			Y1: centre.Y - viewArea,
-			X1: centre.X - viewArea,
-			Y2: centre.Y + viewArea,
-			X2: centre.X + viewArea,
+			Y1: centre.Y - verticalView,
+			X1: centre.X - horizontalView,
+			Y2: centre.Y + verticalView,
+			X2: centre.X + horizontalView,
 		},
 	)
-	return &View{
+	return View{
 		Centre: centre,
 		cells:  toAbsolute(slice),
 	}
 }
 
 func (v *View) Draw(screen tcell.Screen) {
+	screen.Clear()
 	for _, c := range v.cells {
 		// FIXME This is a completely wrong-headed approach
 		//to displaying player
@@ -35,7 +39,7 @@ func (v *View) Draw(screen tcell.Screen) {
 		}
 		c.Draw(screen)
 	}
-	screen.Show()
+	screen.Sync()
 }
 
 // Hug any offsets to (0,0) and so on

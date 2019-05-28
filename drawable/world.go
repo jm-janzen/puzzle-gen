@@ -1,7 +1,10 @@
 package drawable
 
 import (
+	"log"
+
 	"github.com/gdamore/tcell"
+	"github.com/jm-janzen/puzzle-gen/types"
 )
 
 type World struct {
@@ -10,7 +13,8 @@ type World struct {
 }
 
 func (r *World) Draw(screen tcell.Screen) {
-	for _, room := range r.rooms {
+	for i := 0; i < len(r.rooms); i++ {
+		room := r.rooms[i]
 		room.Draw(screen)
 	}
 }
@@ -18,6 +22,7 @@ func (r *World) Draw(screen tcell.Screen) {
 /*
  * TODO Reimplement as branching, rather than grid
  *      , or maybe just rethink entirely ...
+ * 		; yeah, just take an arbitrarily large int for now
  */
 func NewWorld(noRooms int, roomSize int) World {
 	var w World
@@ -39,8 +44,10 @@ func NewWorld(noRooms int, roomSize int) World {
 
 func (w *World) GetRect(dim Dimensions) []Cell {
 	var slice []Cell
-	for _, r := range w.rooms {
-		for _, c := range r.cells {
+	for i := 0; i < len(w.rooms); i++ {
+		r := w.rooms[i]
+		for j := 0; j < len(r.cells); j++ {
+			c := r.cells[j]
 			if c.In(dim) {
 				slice = append(slice, c)
 			}
@@ -53,6 +60,16 @@ func (w *World) GetRooms() []Room {
 	return w.rooms
 }
 
-func (w *World) AddRoom(r *Room, c Cardinality) {
-	// TODO Attach to given room
+func (w *World) GetCell(p types.Point) *Cell {
+	var foundCell *Cell
+	for i := 0; i < len(w.rooms); i++ {
+		r := w.rooms[i]
+		for j := 0; j < len(r.cells); j++ {
+			c := r.cells[j]
+			if c.X == p.X && c.Y == p.Y {
+				foundCell = &c
+			}
+		}
+	}
+	return foundCell
 }

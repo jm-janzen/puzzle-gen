@@ -1,6 +1,9 @@
 package drawable
 
 import (
+	"fmt"
+	"log"
+
 	"github.com/gdamore/tcell"
 )
 
@@ -16,39 +19,27 @@ const (
 func (t Type) String() string {
 	return [...]string{
 		"floor",
+		"hall",
 		"wall",
 		"door",
-		"hall",
 	}[t]
 }
 
-type Cardinality uint
-
-const (
-	North Cardinality = iota
-	East
-	South
-	West
-)
-
-func (c Cardinality) String() string {
-	return [...]string{
-		"north",
-		"south",
-		"east",
-		"west",
-	}[c]
-}
-
 type Cell struct {
-	X, Y  int
+	X, Y int
+	Type Type
+
+	// FIXME Cell should only contain logical data values
+	//not drawable members like before
 	Rune  rune
 	Style tcell.Style
 }
 
 func NewCell(x int, y int, t Type) Cell {
-	var style tcell.Style
-	var rune rune
+	var (
+		style tcell.Style
+		rune  rune
+	)
 	switch t {
 	case Floor, Hall:
 		style = tcell.StyleDefault.Foreground(tcell.ColorGrey)
@@ -63,9 +54,14 @@ func NewCell(x int, y int, t Type) Cell {
 	return Cell{
 		X:     x,
 		Y:     y,
+		Type:  t,
 		Style: style,
 		Rune:  rune,
 	}
+}
+
+func (c Cell) String() string {
+	return fmt.Sprintf("{x:%v,y:%v,typ:%v}", c.X, c.Y, c.Type)
 }
 
 func (c *Cell) Draw(screen tcell.Screen) {
@@ -78,4 +74,15 @@ func (c *Cell) In(dim Dimensions) bool {
 	} else {
 		return false
 	}
+}
+
+// Pointer-receiver pattern
+func (c Cell) GetType() *Type {
+	return &c.Type
+}
+func (c *Cell) SetType(newType Type) {
+	t := c.GetType()
+	*t = newType
+	c.Type = *t
+	log.Printf("me am: %#v, wanna be: %#v", c, *t)
 }
